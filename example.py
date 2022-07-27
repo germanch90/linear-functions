@@ -30,5 +30,3 @@ if __name__ == '__main__':
     print(oferta.compute_x(0))
 
     print(oferta.equilibrium_point(demanda))
-
-
