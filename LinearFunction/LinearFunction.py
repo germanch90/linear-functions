@@ -1,3 +1,6 @@
+import json
+
+import plotly
 import plotly.express as px
 
 
@@ -32,11 +35,18 @@ class LinearFunction:
         """Calcula el valor de x para un valor de y dado"""
         return (y - self.y_intersection)/self.slope
 
-    def graph_me(self, title="", step=250, samples=10):
+    def plot_line(self, title="", step=250, samples=10):
         x_values = range(0, samples*step, step)
         y_values = [self.compute_y(x) for x in x_values]
-        fig = px.line(x=x_values, y=y_values, title=title)
+        return px.line(x=x_values, y=y_values, title=title)
+
+    def graph_me(self, title="", step=250, samples=10):
+        fig = self.plot_line(title, step, samples)
         fig.show()
+
+    def graph_json(self, title="", step=250, samples=10):
+        fig = self.plot_line(title, step, samples)
+        return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     def equilibrium_point(self, linear_func):
         x = (linear_func.y_intersection - self.y_intersection)/(self.slope-linear_func.slope)

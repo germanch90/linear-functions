@@ -1,3 +1,7 @@
+import json
+
+import plotly
+
 from LinearFunction import LinearFunction
 import pandas as pd
 import plotly.express as px
@@ -32,11 +36,16 @@ class FunctionCollection:
     def x_axes(step, samples):
         return list(range(0, samples*step, step))
 
-    def graph_all(self, step=5, samples=100):
+    def graph_all(self, title, step=5, samples=100):
         data = {}
         x_axes = self.x_axes(step, samples)
         for f in self.functions:
             data[f.name] = pd.Series([f.compute_y(x) for x in x_axes], index=x_axes)
         df = pd.DataFrame(data)
-        fig = px.line(df)
-        fig.show()
+        fig = px.line(df, title=title)
+        return fig
+        # fig.show()
+
+    def graph_json(self, step=5, samples=100):
+        fig = self.graph_all(" vs ".join([f.name for f in self.functions]), step, samples)
+        return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
